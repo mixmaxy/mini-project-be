@@ -2,6 +2,15 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
+// Import routes
+import authRoutes from "./routes/auth"
+import eventRoutes from "./routes/events"
+import transactionRoutes from "./routes/transactions"
+import reviewRoutes from "./routes/reviews"
+import ticketRoutes from "./routes/tickets"
+import dashboardRoutes from "./routes/dashboard"
+import promotionRoutes from "./routes/promotions"
+
 // Load environment variables
 dotenv.config();
 
@@ -17,6 +26,15 @@ app.use(
 );
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
+
+// Routes
+app.use("/api/auth", authRoutes)
+app.use("/api/events", eventRoutes)
+app.use("/api/transactions", transactionRoutes)
+app.use("/api/reviews", reviewRoutes)
+app.use("/api/tickets", ticketRoutes)
+app.use("/api/dashboard", dashboardRoutes)
+app.use("/api/promotions", promotionRoutes)
 
 // Error handling middleware
 app.use(
