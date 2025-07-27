@@ -1,7 +1,11 @@
 import express from "express";
 import { z } from "zod";
 import { db } from "../lib/database";
-import { authenticateToken, requireRole, type AuthRequest } from "../lib/auth";
+import {
+  authenticateClerkToken,
+  requireOrganizer,
+  type AuthRequest,
+} from "../lib/clerk-auth";
 import { eventSchema } from "../lib/validations";
 import { paginate } from "../lib/utils";
 
@@ -168,8 +172,8 @@ router.get("/:id", async (req, res) => {
 // Create event (organizer only)
 router.post(
   "/",
-  authenticateToken,
-  requireRole(["ORGANIZER"]),
+  authenticateClerkToken,
+  requireOrganizer,
   async (req: AuthRequest, res) => {
     try {
       const validatedData = eventSchema.parse(req.body);
@@ -208,8 +212,8 @@ router.post(
 // Update event (organizer only)
 router.put(
   "/:id",
-  authenticateToken,
-  requireRole(["ORGANIZER"]),
+  authenticateClerkToken,
+  requireOrganizer,
   async (req: AuthRequest, res) => {
     try {
       const validatedData = eventSchema.partial().parse(req.body);
@@ -264,8 +268,8 @@ router.put(
 // Delete event (organizer only)
 router.delete(
   "/:id",
-  authenticateToken,
-  requireRole(["ORGANIZER"]),
+  authenticateClerkToken,
+  requireOrganizer,
   async (req: AuthRequest, res) => {
     try {
       // Check if event exists and belongs to user
@@ -297,8 +301,8 @@ router.delete(
 // Get organizer's events
 router.get(
   "/organizer/my-events",
-  authenticateToken,
-  requireRole(["ORGANIZER"]),
+  authenticateClerkToken,
+  requireOrganizer,
   async (req: AuthRequest, res) => {
     try {
       const { page = "1", limit = "10" } = req.query;
